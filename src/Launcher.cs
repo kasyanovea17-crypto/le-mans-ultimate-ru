@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -69,9 +69,9 @@ namespace LmuRu {
    LabelAt(sidebar,"LMU",26,35,150,52,30,FontStyle.Bold,Color.White);
    LabelAt(sidebar,"РУССКИЙ ПЕРЕВОД",29,93,163,23,8,FontStyle.Bold,Color.FromArgb(239,116,83));
    LabelAt(sidebar,"ENDURANCE / RU",29,148,160,20,8,FontStyle.Regular,Color.FromArgb(126,148,154));
-   Nav(sidebar,"home","01   Установка",213);Nav(sidebar,"restore","02   Восстановление",266);Nav(sidebar,"help","03   Как пользоваться",319);Nav(sidebar,"log","04   Журнал",372);Nav(sidebar,"about","05   О проекте",425);
+   Nav(sidebar,"home","01   Установка",213);Nav(sidebar,"restore","02   Восстановление",266);Nav(sidebar,"help","03   Как пользоваться",319);Nav(sidebar,"log","04   Журнал",372);Nav(sidebar,"about","05   О проекте",425);Nav(sidebar,"updates","06   Обновления",478);
    LabelAt(sidebar,"COMMUNITY EDITION",28,607,169,22,8,FontStyle.Bold,Color.FromArgb(126,148,154));
-   LabelAt(sidebar,"KARSVEIN",28,634,160,27,12,FontStyle.Bold,Color.White);LabelAt(sidebar,"Лаунчер 1.0.0",28,673,156,22,8,FontStyle.Regular,Color.FromArgb(159,172,178));
+   LabelAt(sidebar,"KARSVEIN",28,634,160,27,12,FontStyle.Bold,Color.White);LabelAt(sidebar,"Лаунчер 1.1.0",28,673,156,22,8,FontStyle.Regular,Color.FromArgb(159,172,178));
    title=LabelAt(this,"Подготовка к старту",230,28,700,42,24,FontStyle.Bold,Theme.Ink);
    subtitle=LabelAt(this,"Le Mans Ultimate  /  перевод интерфейса",232,74,730,24,10,FontStyle.Regular,Theme.Muted);
    var min=ButtonAt(this,"—",980,29,34,29,false);min.AccessibleName="Свернуть";min.Click+=(s,e)=>WindowState=FormWindowState.Minimized;
@@ -82,7 +82,7 @@ namespace LmuRu {
    path=new TextBox{Bounds=new Rectangle(17,34,667,25),BorderStyle=BorderStyle.None,BackColor=Color.White,ForeColor=Theme.Ink,Font=new Font("Segoe UI",10),AccessibleName="Папка Le Mans Ultimate"};location.Controls.Add(path);
    browse=ButtonAt(location,"Выбрать",700,20,100,34,false);browse.Click+=(s,e)=>{using(var d=new FolderBrowserDialog{Description="Выберите папку с Le Mans Ultimate.exe",SelectedPath=path.Text})if(d.ShowDialog(this)==DialogResult.OK)path.Text=d.SelectedPath;};
    path.Text=preview?@"D:\SteamLibrary\steamapps\common\Le Mans Ultimate":LoadPath();path.TextChanged+=(s,e)=>{inspection=null;verifiedPath="";SetStatus("Нужна проверка","Проверьте файлы в выбранной папке.");RefreshButtons();};
-   BuildHome();BuildRestore();BuildHelp();BuildLog();BuildAbout();
+   BuildHome();BuildRestore();BuildHelp();BuildLog();BuildAbout();BuildUpdates();
    launch=ButtonAt(this,"Запустить Le Mans Ultimate  →",230,653,306,44,false);launch.AccessibleName="Запустить игру через Steam";launch.Click+=(s,e)=>LaunchGame();
    footer=LabelAt(this,"Выберите папку и проверьте совместимость.",557,648,491,44,9,FontStyle.Regular,Theme.Muted);
    progress=new ProgressBar{Bounds=new Rectangle(558,699,490,3),Minimum=0,Maximum=100,Visible=false};Controls.Add(progress);
@@ -108,21 +108,21 @@ namespace LmuRu {
    LabelAt(hero,"24H  /  RACE TOGETHER",582,112,220,24,8,FontStyle.Bold,Color.FromArgb(169,186,192));
    var main=new Card{Bounds=new Rectangle(0,168,506,246)};p.Controls.Add(main);
    LabelAt(main,"Знакомая игра. Русский текст.",21,20,465,33,17,FontStyle.Bold,Theme.Ink);
-   LabelAt(main,"Меню, настройки и подсказки — с гоночной\nтерминологией и поддержкой кириллицы.",22,66,462,50,11,FontStyle.Regular,Theme.Muted);
+   LabelAt(main,"Меню, HUD и подсказки — с гоночной\nтерминологией и поддержкой кириллицы.",22,66,462,50,11,FontStyle.Regular,Theme.Muted);
    LabelAt(main,"Перед установкой закройте игру. Язык — English.",22,127,466,36,9,FontStyle.Regular,Theme.Muted);
    check=ButtonAt(main,"Проверить файлы",22,184,207,42,false);check.Click+=async(s,e)=>await Execute("check",null);
    install=ButtonAt(main,"Установить перевод",243,184,240,42,true);install.Click+=async(s,e)=>await Execute("install",null);
    var status=new Card{Bounds=new Rectangle(524,168,294,246)};p.Controls.Add(status);
-   versionLabel=LabelAt(status,"1.0.0  /  ИГРА 1.4150",19,19,260,21,8,FontStyle.Bold,Theme.Muted);
+   versionLabel=LabelAt(status,"1.1.0  /  ИГРА 1.4150",19,19,260,21,8,FontStyle.Bold,Theme.Muted);
    statusTitle=LabelAt(status,"",19,54,260,34,15,FontStyle.Bold,Theme.Ink);
    statusText=LabelAt(status,"",19,98,255,66,9,FontStyle.Regular,Theme.Muted);
-   LabelAt(status,"2 386 строк обработано",19,178,258,25,12,FontStyle.Bold,Theme.Ink);
-   LabelAt(status,"2 357 RU  ·  29 служебных",19,211,264,22,9,FontStyle.Regular,Theme.Muted);
+   LabelAt(status,(pack.Info.reviewed_strings+pack.Native.Info.translated_strings).ToString("N0")+" строк обработано",19,178,258,25,12,FontStyle.Bold,Theme.Ink);
+   LabelAt(status,"Меню + HUD + кириллица",19,211,264,22,9,FontStyle.Regular,Theme.Muted);
   }
   void BuildRestore() {
    var p=Page("restore");var c=new Card{Bounds=new Rectangle(0,0,818,414)};p.Controls.Add(c);
    LabelAt(c,"Вернуться к оригиналу",26,24,742,43,23,FontStyle.Bold,Theme.Ink);
-   LabelAt(c,"Лаунчер возвращает точную копию исходного UI.zip.\nСохранения, профиль пилота и настройки управления остаются на месте.",28,88,752,62,12,FontStyle.Regular,Theme.Muted);
+   LabelAt(c,"Лаунчер восстанавливает UI.zip, словарь HUD и гоночные шрифты.\nСохранения, профиль пилота и настройки управления остаются на месте.",28,88,752,62,12,FontStyle.Regular,Theme.Muted);
    backupText=LabelAt(c,"Проверенная копия пока не найдена.",28,172,749,77,10,FontStyle.Regular,Theme.Muted);
    restore=ButtonAt(c,"Восстановить оригинал",28,278,309,45,true);restore.Click+=async(s,e)=>{if(MessageBox.Show(this,"Вернуть оригинальный интерфейс Le Mans Ultimate?\nРезервная копия будет сохранена.","Восстановление",MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button2)==DialogResult.Yes)await Execute("restore",null);};
    adopt=ButtonAt(c,"Указать исходный UI.zip",355,278,307,45,false);adopt.Click+=async(s,e)=>{using(var d=new OpenFileDialog{Title="Исходный UI.zip из этой версии игры",Filter="Оригинальный UI.zip|UI.zip;UI.original.zip|ZIP-архивы|*.zip",CheckFileExists=true})if(d.ShowDialog(this)==DialogResult.OK)await Execute("adopt",d.FileName);};
@@ -142,15 +142,38 @@ namespace LmuRu {
    var save=ButtonAt(c,"Сохранить журнал",26,351,235,39,false);save.Click+=(s,e)=>{using(var d=new SaveFileDialog{Filter="Текстовый журнал|*.txt",FileName="LMU-RU-log.txt"})if(d.ShowDialog(this)==DialogResult.OK)try{File.WriteAllText(d.FileName,log.ToString(),Encoding.UTF8);}catch(Exception ex){MessageBox.Show(this,ex.Message,"Журнал");}};
    LabelAt(c,"Журнал хранится локально и не отправляется автоматически.",280,360,512,41,9,FontStyle.Regular,Theme.Muted);
   }
+  RaceButton updateCheck,updateDownload; Label updateStatus; UpdateOffer offer;
+  void BuildUpdates() {
+   var p=Page("updates");var c=new Card{Bounds=new Rectangle(0,0,818,414)};p.Controls.Add(c);
+   LabelAt(c,"Перевод, шрифты и HUD",26,24,765,44,23,FontStyle.Bold,Theme.Ink);
+   LabelAt(c,"Всё обновляется одним пакетом из нашего GitHub.",28,83,750,28,12,FontStyle.Bold,Theme.Accent);
+   LabelAt(c,"1. Проверьте наличие новой версии.\n2. Скачайте проверенный пакет и откройте новый лаунчер.\n3. Закройте игру и нажмите «Обновить перевод».\n\nЗагрузка не меняет файлы игры. Оригинальная копия сохраняется.\nПроверка запускается только по кнопке; учётная запись не нужна.",28,128,750,142,11,FontStyle.Regular,Theme.Muted);
+   updateStatus=LabelAt(c,"Установленная версия лаунчера: "+pack.Info.version,28,282,750,54,10,FontStyle.Regular,Theme.Ink);
+   updateCheck=ButtonAt(c,"Проверить обновления",28,351,300,42,false);updateCheck.Click+=async(s,e)=>await CheckUpdates();
+   updateDownload=ButtonAt(c,"Скачать и открыть",347,351,300,42,true);updateDownload.Enabled=false;updateDownload.Click+=async(s,e)=>await DownloadUpdate();
+  }
+  async Task CheckUpdates() {
+   if(busy||preview)return;busy=true;offer=null;RefreshButtons();updateStatus.Text="Проверяем опубликованные версии…";
+   try {offer=await Task.Run(()=>Updates.Check(pack.Info.version));updateStatus.Text=offer==null?"У вас актуальная версия перевода, шрифтов и HUD.":"Доступна версия "+offer.Version+" · "+(offer.Size/1048576.0).ToString("0.0")+" МБ. Проверим SHA-256 после загрузки.";Log("UPDATE_CHECK_PASS · "+(offer==null?"актуально":offer.Version));}
+   catch(Exception ex){updateStatus.Text="Проверка не завершена: "+ex.Message;Log("UPDATE_CHECK_FAIL · "+ex.Message);}
+   finally{busy=false;RefreshButtons();}
+  }
+  async Task DownloadUpdate() {
+   if(busy||preview||offer==null)return;busy=true;RefreshButtons();updateStatus.Text="Загружаем и проверяем пакет…";
+   try {string exe=await Task.Run(()=>Updates.Download(offer,Path.Combine(Path.GetDirectoryName(prefs),"updates")));updateStatus.Text="Пакет проверен. Версия "+offer.Version+" готова к запуску.";Log("UPDATE_DOWNLOAD_PASS · "+offer.Version);
+    if(MessageBox.Show(this,"Открыть новый лаунчер "+offer.Version+"?\nВ нём нажмите «Обновить перевод»: обновятся меню, шрифты и HUD.","Обновление готово",MessageBoxButtons.YesNo,MessageBoxIcon.Question)==DialogResult.Yes){Process.Start(new ProcessStartInfo(exe){UseShellExecute=true});busy=false;Close();}
+   }catch(Exception ex){updateStatus.Text="Загрузка прервана: "+ex.Message;Log("UPDATE_DOWNLOAD_FAIL · "+ex.Message);}
+   finally{busy=false;if(!closing)RefreshButtons();}
+  }
   void BuildAbout() {
    var p=Page("about");var c=new Card{Bounds=new Rectangle(0,0,818,414)};p.Controls.Add(c);
    LabelAt(c,"Для тех, кто живёт гонками.",26,24,761,45,23,FontStyle.Bold,Theme.Ink);
    LabelAt(c,"Le Mans Ultimate · Русское сообщество · Karsvein",28,85,753,32,12,FontStyle.Bold,Theme.Accent);
-   LabelAt(c,"Меню и настройки: все 2 386 строк проверены по смыслу.\n2 357 строк содержат русский текст, 29 — технические обозначения.\n\nВ комплекте: перевод меню, пять шрифтов и средства восстановления.\nОригинальный архив игры не распространяется.\n\nНеофициальный проект, не связанный со Studio 397 и Motorsport Games.",28,137,753,181,11,FontStyle.Regular,Theme.Muted);
+   LabelAt(c,"Меню: 2 393 строки. HUD, боксы и гоночные сообщения: 522 строки.\nКириллица добавлена в гоночные шрифты; исходные символы сохранены.\n\nЧасть подписей встроена в движок или изображения и остаётся английской.\nОригинальный архив игры не распространяется.\n\nНеофициальный проект, не связанный со Studio 397 и Motorsport Games.",28,137,753,181,11,FontStyle.Regular,Theme.Muted);
    var repo=ButtonAt(c,"Исходники на GitHub  ↗",28,351,290,42,false);repo.Click+=(s,e)=>OpenUrl(Repository);
    var updates=ButtonAt(c,"Свежие версии  ↗",336,351,271,42,true);updates.Click+=(s,e)=>OpenUrl(Repository+"/releases");
   }
-  internal void ShowPage(string id) {current=id;foreach(var p in pages)p.Value.Visible=p.Key==id;foreach(var n in nav){n.Value.Selected=n.Key==id;n.Value.Invalidate();}title.Text=id=="home"?"Подготовка к старту":id=="restore"?"Возвращение в боксы":id=="help"?"Коротко о главном":id=="log"?"Всё под контролем":"Создано для сообщества";if(logView!=null)logView.Text=log.ToString();}
+  internal void ShowPage(string id) {current=id;foreach(var p in pages)p.Value.Visible=p.Key==id;foreach(var n in nav){n.Value.Selected=n.Key==id;n.Value.Invalidate();}title.Text=id=="home"?"Подготовка к старту":id=="restore"?"Возвращение в боксы":id=="help"?"Коротко о главном":id=="log"?"Всё под контролем":id=="updates"?"Всегда на актуальной версии":"Создано для сообщества";if(logView!=null)logView.Text=log.ToString();}
   void SetStatus(string heading,string message){if(statusTitle!=null){statusTitle.Text=heading;statusText.Text=message;}}
   void SetPreview(){inspection=new Inspection{State="installed",HasBackup=true,CanRestore=true,CanLaunch=true,Message="Русский перевод установлен. Оригинал сохранён.",Backup=@"D:\SteamLibrary\steamapps\common\Le Mans Ultimate\Bin\LMU-RU-backup\UI.original.zip"};verifiedPath=path.Text;ApplyInspection();Log("CHECK_PASS · словари и шрифты проверены");footer.Text="Всё готово. Увидимся на трассе.";}
   void ApplyInspection() {
@@ -159,7 +182,7 @@ namespace LmuRu {
    backupText.Text=inspection.HasBackup?"Оригинал проверен и сохранён:\n"+inspection.Backup:"Оригинальная копия пока не сохранена. При установке с исходной игры\nона создаётся автоматически. Для пробной версии укажите её вручную.";
    RefreshButtons();
   }
-  void RefreshButtons(){bool valid=inspection!=null&&verifiedPath==path.Text;path.ReadOnly=busy;browse.Enabled=!busy;check.Enabled=!busy;install.Enabled=!busy&&valid&&inspection.CanInstall;install.Text=valid&&inspection.State=="installed"?"Перевод установлен":"Установить перевод";restore.Enabled=!busy&&valid&&inspection.CanRestore;adopt.Enabled=!busy&&valid&&!inspection.HasBackup&&inspection.State!="unknown";if(launch!=null)launch.Enabled=!busy&&valid&&inspection.CanLaunch;}
+  void RefreshButtons(){bool valid=inspection!=null&&verifiedPath==path.Text;path.ReadOnly=busy;browse.Enabled=!busy;check.Enabled=!busy;install.Enabled=!busy&&valid&&inspection.CanInstall;install.Text=valid&&inspection.State=="installed"?"Перевод установлен":valid&&inspection.State=="previous"?"Обновить перевод":"Установить перевод";restore.Enabled=!busy&&valid&&inspection.CanRestore;adopt.Enabled=!busy&&valid&&!inspection.HasBackup&&inspection.State!="unknown";if(updateCheck!=null)updateCheck.Enabled=!busy;if(updateDownload!=null)updateDownload.Enabled=!busy&&offer!=null;if(launch!=null)launch.Enabled=!busy&&valid&&inspection.CanLaunch;}
   void Log(string message){log.AppendLine(DateTime.Now.ToString("HH:mm:ss")+"  "+message);if(logView!=null)logView.Text=log.ToString();}
   async Task Execute(string operation,string original) {
    if(busy||preview)return;bool elevate=false;busy=true;RefreshButtons();progress.Visible=true;progress.Value=0;string selected=path.Text;
@@ -192,12 +215,12 @@ namespace LmuRu {
   void OpenUrl(string url){if(preview)return;try{Process.Start(new ProcessStartInfo(url){UseShellExecute=true});}catch(Exception ex){MessageBox.Show(this,ex.Message,"Открыть ссылку");}}
   internal int UiAssertions() {
    int n=0;Action<bool> assert=b=>{if(!b)throw new InvalidDataException("UI assertion failed #"+n);n++;};
-   assert(pages.Count==5);assert(nav.Count==5);assert(!install.Enabled);assert(!restore.Enabled);assert(!launch.Enabled);
+   assert(pages.Count==6);assert(nav.Count==6);assert(!install.Enabled);assert(!restore.Enabled);assert(!launch.Enabled);
    SetPreview();assert(launch.Enabled);assert(restore.Enabled);assert(!install.Enabled);assert(!adopt.Enabled);
    foreach(string id in pages.Keys){ShowPage(id);assert(current==id);assert(nav[id].Selected);}
    ShowPage("home");busy=true;RefreshButtons();assert(!check.Enabled&&!install.Enabled&&!restore.Enabled&&!launch.Enabled&&!browse.Enabled);busy=false;
    path.Text=@"D:\Changed";assert(inspection==null);assert(!install.Enabled&&!restore.Enabled&&!launch.Enabled);SetPreview();
-   assert(Repository.StartsWith("https://github.com/"));assert(Engine.DetectGame()!=null);assert(pack.Info.reviewed_strings==2386);
+   assert(Repository.StartsWith("https://github.com/"));assert(Engine.DetectGame()!=null);assert(pack.Info.reviewed_strings==2393);
    return n;
   }
   internal void SavePreview(string file,string page){SetPreview();ShowPage(page);using(var b=new Bitmap(Width,Height)){DrawToBitmap(b,new Rectangle(0,0,Width,Height));b.Save(file,System.Drawing.Imaging.ImageFormat.Png);}}
