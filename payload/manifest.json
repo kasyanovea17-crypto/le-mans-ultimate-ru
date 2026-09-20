@@ -1,36 +1,37 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "game_version": "1.4150",
   "original_sha256": "7456925e14e4433045cfb67f866d5716c25ea02d9f34c1ea06156ede5b21aa96",
   "original_entries": 3969,
   "known_current_sha256": [
+    "964edfd9abd6aa9891e496f272e7c53699e776ff5c696b7e21654bcab607d057"
+  ],
+  "known_previous_sha256": [
+    "99bbfb5d7c7d4531d2093fdba4ed95c0482855101792520ac1726aabf8002918",
     "f3d3cb66b9ff57eb4b66fa8238e5558ce2546e322efbfa62a7136f71b2ba34e4",
     "8aade6a78853bdea8c0eaa8391bc451387617793464fc449e71d868a2dcaafdf"
   ],
-  "known_previous_sha256": [
-    "99bbfb5d7c7d4531d2093fdba4ed95c0482855101792520ac1726aabf8002918"
-  ],
-  "reviewed_strings": 2386,
-  "russian_strings": 2357,
+  "reviewed_strings": 2393,
+  "russian_strings": 2364,
   "preserved_special": 29,
   "files": [
     {
       "entry": "start/assets/app-3nAXvJFs.css",
       "action": "modified",
       "before_sha256": "23dff9c84480586270d473e203404600da83faf3c1da83e57370703992f02c36",
-      "after_sha256": "01b09c93f898e089bc646a12fac72e54805b9593375da589f3af919621bad2e6",
+      "after_sha256": "835c7b77b99fe384f57824a2f749b4c46d8f5144f9bb6f50459702010f20d03c",
       "mode": "transform",
       "payload": "files/app-3nAXvJFs.css.delta.json",
-      "payload_sha256": "483ac70a07795e8a8eefecae857ae47abe2b19b980ff9d1e0d31c210da107bc9"
+      "payload_sha256": "a213c773c5619e7ffbe9a9b187c49c8aecf365779c1d9e6b8953b78f6cc21fcc"
     },
     {
       "entry": "start/assets/app-BnHQL6RF.js",
       "action": "modified",
       "before_sha256": "f520fcac38c3070f9ebf8887e0e2037645ae649aafa31f9ee979631a87899a7f",
-      "after_sha256": "17a1ac539d96079e59641b057eaa59d42363fe9df27b877759a607823174f291",
+      "after_sha256": "51ab0cd5fa1d9b970e23b9026749c4755efa4a40d1ff39f942b90fef4edc9a57",
       "mode": "transform",
       "payload": "files/app-BnHQL6RF.js.delta.json",
-      "payload_sha256": "5e8d28a7b94e81858b3bd115774793adb1934109d29a1a3792e76fb290c69d91"
+      "payload_sha256": "93c9d5da94c33d9397528af4da75aa5f9dbc878adea67b3b04fe52cfa5197a7f"
     },
     {
       "entry": "start/assets/fonts-B97nTRG4.css",
@@ -54,10 +55,10 @@
       "entry": "start/locales/en/translation.json",
       "action": "modified",
       "before_sha256": "6f8534b93300acc10384f188c1c127d6e2f43e5a805ca4e3718911bde4db0a21",
-      "after_sha256": "26b7883c34c342880a73e03a0884ed48aa5531845b12a004950057e27a3cb8d5",
+      "after_sha256": "989f3bb60865db794ee48761da424fd4b347667bb9fdf76738336541c8044bef",
       "mode": "replace",
       "payload": "files/translation.json",
-      "payload_sha256": "26b7883c34c342880a73e03a0884ed48aa5531845b12a004950057e27a3cb8d5"
+      "payload_sha256": "989f3bb60865db794ee48761da424fd4b347667bb9fdf76738336541c8044bef"
     },
     {
       "entry": "start/fonts/ru/Roboto-Black.ttf",
@@ -123,5 +124,7 @@
       "payload": "files/SOURCES.json",
       "payload_sha256": "cc88b87367b859658969643c1b0e4c76fee32ef6281911c1dfdc723ec4a7bade"
     }
-  ]
+  ],
+  "native_payload": "files/hud-patches.zip",
+  "native_sha256": "3bdc6d542c95d7f18577094db7da2f1a76fc97db827d5715455ad39aa6a2ba34"
 }
