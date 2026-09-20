@@ -1,0 +1,7 @@
+build/
+*.error.txt
+rollback-result.json
+*.tmp
+*.previous
+__pycache__/
+dist/
