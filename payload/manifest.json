@@ -1,0 +1,127 @@
+{
+  "version": "1.0.0",
+  "game_version": "1.4150",
+  "original_sha256": "7456925e14e4433045cfb67f866d5716c25ea02d9f34c1ea06156ede5b21aa96",
+  "original_entries": 3969,
+  "known_current_sha256": [
+    "f3d3cb66b9ff57eb4b66fa8238e5558ce2546e322efbfa62a7136f71b2ba34e4",
+    "8aade6a78853bdea8c0eaa8391bc451387617793464fc449e71d868a2dcaafdf"
+  ],
+  "known_previous_sha256": [
+    "99bbfb5d7c7d4531d2093fdba4ed95c0482855101792520ac1726aabf8002918"
+  ],
+  "reviewed_strings": 2386,
+  "russian_strings": 2357,
+  "preserved_special": 29,
+  "files": [
+    {
+      "entry": "start/assets/app-3nAXvJFs.css",
+      "action": "modified",
+      "before_sha256": "23dff9c84480586270d473e203404600da83faf3c1da83e57370703992f02c36",
+      "after_sha256": "01b09c93f898e089bc646a12fac72e54805b9593375da589f3af919621bad2e6",
+      "mode": "transform",
+      "payload": "files/app-3nAXvJFs.css.delta.json",
+      "payload_sha256": "483ac70a07795e8a8eefecae857ae47abe2b19b980ff9d1e0d31c210da107bc9"
+    },
+    {
+      "entry": "start/assets/app-BnHQL6RF.js",
+      "action": "modified",
+      "before_sha256": "f520fcac38c3070f9ebf8887e0e2037645ae649aafa31f9ee979631a87899a7f",
+      "after_sha256": "17a1ac539d96079e59641b057eaa59d42363fe9df27b877759a607823174f291",
+      "mode": "transform",
+      "payload": "files/app-BnHQL6RF.js.delta.json",
+      "payload_sha256": "5e8d28a7b94e81858b3bd115774793adb1934109d29a1a3792e76fb290c69d91"
+    },
+    {
+      "entry": "start/assets/fonts-B97nTRG4.css",
+      "action": "modified",
+      "before_sha256": "580a8f60132492f79e13010184ee02743734bb5e4d403e01fac05e41d34f478b",
+      "after_sha256": "5b85806e674067fc50903b42a87e89b27a4f6a25fbb1140c5d9d247d15ce8ee0",
+      "mode": "transform",
+      "payload": "files/fonts-B97nTRG4.css.delta.json",
+      "payload_sha256": "fa138b61c8fb1a1bec2f5c9cc2edfb9921764aaff1398e09c8a5fa898aa5516c"
+    },
+    {
+      "entry": "start/locales/en/setting_descriptions.json",
+      "action": "modified",
+      "before_sha256": "c6117ea9b752c8da0de8a5b26435f1ced1483420813b755bb49128860f454b2c",
+      "after_sha256": "5ec6ddabe0de217cb93b8c27c5f7108e2b90efd5ee8e48db0c1c444abc266472",
+      "mode": "replace",
+      "payload": "files/setting_descriptions.json",
+      "payload_sha256": "5ec6ddabe0de217cb93b8c27c5f7108e2b90efd5ee8e48db0c1c444abc266472"
+    },
+    {
+      "entry": "start/locales/en/translation.json",
+      "action": "modified",
+      "before_sha256": "6f8534b93300acc10384f188c1c127d6e2f43e5a805ca4e3718911bde4db0a21",
+      "after_sha256": "26b7883c34c342880a73e03a0884ed48aa5531845b12a004950057e27a3cb8d5",
+      "mode": "replace",
+      "payload": "files/translation.json",
+      "payload_sha256": "26b7883c34c342880a73e03a0884ed48aa5531845b12a004950057e27a3cb8d5"
+    },
+    {
+      "entry": "start/fonts/ru/Roboto-Black.ttf",
+      "action": "added",
+      "after_sha256": "0b2912fdf7fc929688f3a4c3d02974f07aeaba877adcd8121a20342060872672",
+      "mode": "replace",
+      "payload": "files/Roboto-Black.ttf",
+      "payload_sha256": "0b2912fdf7fc929688f3a4c3d02974f07aeaba877adcd8121a20342060872672"
+    },
+    {
+      "entry": "start/fonts/ru/Roboto-Bold.ttf",
+      "action": "added",
+      "after_sha256": "e8b9199dc71f1ce5e84b23b772b9770b65307856abaeb35b0d8cc56e0176a81d",
+      "mode": "replace",
+      "payload": "files/Roboto-Bold.ttf",
+      "payload_sha256": "e8b9199dc71f1ce5e84b23b772b9770b65307856abaeb35b0d8cc56e0176a81d"
+    },
+    {
+      "entry": "start/fonts/ru/Roboto-OFL.txt",
+      "action": "added",
+      "after_sha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41",
+      "mode": "replace",
+      "payload": "files/Roboto-OFL.txt",
+      "payload_sha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41"
+    },
+    {
+      "entry": "start/fonts/ru/Roboto-Regular.ttf",
+      "action": "added",
+      "after_sha256": "a296c57875d5371ca36d2c63d669a47b7e5e51f90bdc1435bdf54c497da78e75",
+      "mode": "replace",
+      "payload": "files/Roboto-Regular.ttf",
+      "payload_sha256": "a296c57875d5371ca36d2c63d669a47b7e5e51f90bdc1435bdf54c497da78e75"
+    },
+    {
+      "entry": "start/fonts/ru/Roboto-SemiBold.ttf",
+      "action": "added",
+      "after_sha256": "428eb75ae01e39817bd28271b72b44beb2c1f96f32f1d852e7803fb16e6c37cb",
+      "mode": "replace",
+      "payload": "files/Roboto-SemiBold.ttf",
+      "payload_sha256": "428eb75ae01e39817bd28271b72b44beb2c1f96f32f1d852e7803fb16e6c37cb"
+    },
+    {
+      "entry": "start/fonts/ru/RobotoCondensed-OFL.txt",
+      "action": "added",
+      "after_sha256": "0e4cc6ece88573545be2ed25835363662a6182ba4a4c1b5c8feda52add30e8a6",
+      "mode": "replace",
+      "payload": "files/RobotoCondensed-OFL.txt",
+      "payload_sha256": "0e4cc6ece88573545be2ed25835363662a6182ba4a4c1b5c8feda52add30e8a6"
+    },
+    {
+      "entry": "start/fonts/ru/RobotoCondensed-SemiBold.ttf",
+      "action": "added",
+      "after_sha256": "e840cccc1788c4f345078bdf979f88192b03615583729015a346ab7a1e3c9de1",
+      "mode": "replace",
+      "payload": "files/RobotoCondensed-SemiBold.ttf",
+      "payload_sha256": "e840cccc1788c4f345078bdf979f88192b03615583729015a346ab7a1e3c9de1"
+    },
+    {
+      "entry": "start/fonts/ru/SOURCES.json",
+      "action": "added",
+      "after_sha256": "cc88b87367b859658969643c1b0e4c76fee32ef6281911c1dfdc723ec4a7bade",
+      "mode": "replace",
+      "payload": "files/SOURCES.json",
+      "payload_sha256": "cc88b87367b859658969643c1b0e4c76fee32ef6281911c1dfdc723ec4a7bade"
+    }
+  ]
+}
