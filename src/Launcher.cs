@@ -71,7 +71,7 @@ namespace LmuRu {
    LabelAt(sidebar,"ENDURANCE / RU",29,148,160,20,8,FontStyle.Regular,Color.FromArgb(126,148,154));
    Nav(sidebar,"home","01   Установка",213);Nav(sidebar,"restore","02   Восстановление",266);Nav(sidebar,"help","03   Как пользоваться",319);Nav(sidebar,"log","04   Журнал",372);Nav(sidebar,"about","05   О проекте",425);
    LabelAt(sidebar,"COMMUNITY EDITION",28,607,169,22,8,FontStyle.Bold,Color.FromArgb(126,148,154));
-   LabelAt(sidebar,"KARSVEIN",28,634,160,27,12,FontStyle.Bold,Color.White);LabelAt(sidebar,"Лаунчер 1.1.0 RC1",28,673,156,22,8,FontStyle.Regular,Color.FromArgb(159,172,178));
+   LabelAt(sidebar,"KARSVEIN",28,634,160,27,12,FontStyle.Bold,Color.White);LabelAt(sidebar,"Лаунчер 1.0.0",28,673,156,22,8,FontStyle.Regular,Color.FromArgb(159,172,178));
    title=LabelAt(this,"Подготовка к старту",230,28,700,42,24,FontStyle.Bold,Theme.Ink);
    subtitle=LabelAt(this,"Le Mans Ultimate  /  перевод интерфейса",232,74,730,24,10,FontStyle.Regular,Theme.Muted);
    var min=ButtonAt(this,"—",980,29,34,29,false);min.AccessibleName="Свернуть";min.Click+=(s,e)=>WindowState=FormWindowState.Minimized;
@@ -108,21 +108,21 @@ namespace LmuRu {
    LabelAt(hero,"24H  /  RACE TOGETHER",582,112,220,24,8,FontStyle.Bold,Color.FromArgb(169,186,192));
    var main=new Card{Bounds=new Rectangle(0,168,506,246)};p.Controls.Add(main);
    LabelAt(main,"Знакомая игра. Русский текст.",21,20,465,33,17,FontStyle.Bold,Theme.Ink);
-   LabelAt(main,"Меню, HUD и подсказки — с гоночной\nтерминологией и поддержкой кириллицы.",22,66,462,50,11,FontStyle.Regular,Theme.Muted);
+   LabelAt(main,"Меню, настройки и подсказки — с гоночной\nтерминологией и поддержкой кириллицы.",22,66,462,50,11,FontStyle.Regular,Theme.Muted);
    LabelAt(main,"Перед установкой закройте игру. Язык — English.",22,127,466,36,9,FontStyle.Regular,Theme.Muted);
    check=ButtonAt(main,"Проверить файлы",22,184,207,42,false);check.Click+=async(s,e)=>await Execute("check",null);
    install=ButtonAt(main,"Установить перевод",243,184,240,42,true);install.Click+=async(s,e)=>await Execute("install",null);
    var status=new Card{Bounds=new Rectangle(524,168,294,246)};p.Controls.Add(status);
-   versionLabel=LabelAt(status,"1.1.0 RC1  /  ИГРА 1.4150",19,19,260,21,8,FontStyle.Bold,Theme.Muted);
+   versionLabel=LabelAt(status,"1.0.0  /  ИГРА 1.4150",19,19,260,21,8,FontStyle.Bold,Theme.Muted);
    statusTitle=LabelAt(status,"",19,54,260,34,15,FontStyle.Bold,Theme.Ink);
    statusText=LabelAt(status,"",19,98,255,66,9,FontStyle.Regular,Theme.Muted);
-   LabelAt(status,"2 900 строк обработано",19,178,258,25,12,FontStyle.Bold,Theme.Ink);
-   LabelAt(status,"2 871 RU  ·  29 служебных",19,211,264,22,9,FontStyle.Regular,Theme.Muted);
+   LabelAt(status,"2 386 строк обработано",19,178,258,25,12,FontStyle.Bold,Theme.Ink);
+   LabelAt(status,"2 357 RU  ·  29 служебных",19,211,264,22,9,FontStyle.Regular,Theme.Muted);
   }
   void BuildRestore() {
    var p=Page("restore");var c=new Card{Bounds=new Rectangle(0,0,818,414)};p.Controls.Add(c);
    LabelAt(c,"Вернуться к оригиналу",26,24,742,43,23,FontStyle.Bold,Theme.Ink);
-   LabelAt(c,"Лаунчер восстанавливает UI.zip, словарь HUD и гоночные шрифты.\nСохранения, профиль пилота и настройки управления остаются на месте.",28,88,752,62,12,FontStyle.Regular,Theme.Muted);
+   LabelAt(c,"Лаунчер возвращает точную копию исходного UI.zip.\nСохранения, профиль пилота и настройки управления остаются на месте.",28,88,752,62,12,FontStyle.Regular,Theme.Muted);
    backupText=LabelAt(c,"Проверенная копия пока не найдена.",28,172,749,77,10,FontStyle.Regular,Theme.Muted);
    restore=ButtonAt(c,"Восстановить оригинал",28,278,309,45,true);restore.Click+=async(s,e)=>{if(MessageBox.Show(this,"Вернуть оригинальный интерфейс Le Mans Ultimate?\nРезервная копия будет сохранена.","Восстановление",MessageBoxButtons.YesNo,MessageBoxIcon.Question,MessageBoxDefaultButton.Button2)==DialogResult.Yes)await Execute("restore",null);};
    adopt=ButtonAt(c,"Указать исходный UI.zip",355,278,307,45,false);adopt.Click+=async(s,e)=>{using(var d=new OpenFileDialog{Title="Исходный UI.zip из этой версии игры",Filter="Оригинальный UI.zip|UI.zip;UI.original.zip|ZIP-архивы|*.zip",CheckFileExists=true})if(d.ShowDialog(this)==DialogResult.OK)await Execute("adopt",d.FileName);};
@@ -146,7 +146,7 @@ namespace LmuRu {
    var p=Page("about");var c=new Card{Bounds=new Rectangle(0,0,818,414)};p.Controls.Add(c);
    LabelAt(c,"Для тех, кто живёт гонками.",26,24,761,45,23,FontStyle.Bold,Theme.Ink);
    LabelAt(c,"Le Mans Ultimate · Русское сообщество · Karsvein",28,85,753,32,12,FontStyle.Bold,Theme.Accent);
-   LabelAt(c,"Меню: 2 386 строк. HUD, боксы и гоночные сообщения: 514 строк.\nКириллица добавлена в гоночные шрифты; исходные символы сохранены.\n\nВерсия RC1: перевод HUD ожидает визуальной проверки в заезде.\nОригинальный архив игры не распространяется.\n\nНеофициальный проект, не связанный со Studio 397 и Motorsport Games.",28,137,753,181,11,FontStyle.Regular,Theme.Muted);
+   LabelAt(c,"Меню и настройки: все 2 386 строк проверены по смыслу.\n2 357 строк содержат русский текст, 29 — технические обозначения.\n\nВ комплекте: перевод меню, пять шрифтов и средства восстановления.\nОригинальный архив игры не распространяется.\n\nНеофициальный проект, не связанный со Studio 397 и Motorsport Games.",28,137,753,181,11,FontStyle.Regular,Theme.Muted);
    var repo=ButtonAt(c,"Исходники на GitHub  ↗",28,351,290,42,false);repo.Click+=(s,e)=>OpenUrl(Repository);
    var updates=ButtonAt(c,"Свежие версии  ↗",336,351,271,42,true);updates.Click+=(s,e)=>OpenUrl(Repository+"/releases");
   }

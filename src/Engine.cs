@@ -17,7 +17,7 @@ namespace LmuRu {
   public string entry, action, mode, payload, before_sha256, after_sha256, payload_sha256;
  }
  public sealed class Manifest {
-  public string version, game_version, original_sha256, native_payload, native_sha256;
+  public string version, game_version, original_sha256;
   public int original_entries, reviewed_strings, russian_strings, preserved_special;
   public string[] known_current_sha256, known_previous_sha256;
   public PatchFile[] files;
@@ -30,7 +30,7 @@ namespace LmuRu {
   public bool HasBackup, CanInstall, CanRestore, CanLaunch;
  }
  public sealed class Package {
-  public Manifest Info; public NativePackage Native; public Dictionary<string,byte[]> Data = new Dictionary<string,byte[]>();
+  public Manifest Info; public Dictionary<string,byte[]> Data = new Dictionary<string,byte[]>();
   public static JavaScriptSerializer Json = new JavaScriptSerializer { MaxJsonLength=32*1024*1024 };
   public static Package Load() {
    var p=new Package();
@@ -40,7 +40,6 @@ namespace LmuRu {
      var manifest=Read(zip.GetEntry("manifest.json"));
      if(Hash(manifest)!=BuildInfo.ManifestHash)throw new InvalidDataException("Манифест пакета повреждён.");
      p.Info=Json.Deserialize<Manifest>(Encoding.UTF8.GetString(manifest));
-     if(!string.IsNullOrEmpty(p.Info.native_payload)){var bytes=Read(zip.GetEntry(p.Info.native_payload));if(Hash(bytes)!=p.Info.native_sha256)throw new InvalidDataException("Повреждён пакет HUD.");p.Native=NativePackage.Load(bytes);}
      foreach(var f in p.Info.files) {
       byte[] bytes=Read(zip.GetEntry(f.payload));
       if(Hash(bytes)!=f.payload_sha256)throw new InvalidDataException("Повреждён ресурс: "+f.payload);
@@ -99,7 +98,7 @@ namespace LmuRu {
    if(Running())throw new IOException("Сначала закройте Le Mans Ultimate и её лаунчер.");
    string root=GameRoot(game);PlainPath(root);PlainPath(Path.Combine(root,"Bin"));PlainPath(Target(root));PlainPath(Path.GetDirectoryName(BackupPath(root)));PlainPath(BackupPath(root));PlainPath(ReceiptPath(root));
   }
-  Inspection InspectMenu(string game) {
+  public Inspection Inspect(string game) {
    string target=Target(game),backup=BackupPath(game);Progress(5,"Проверяем контрольную сумму UI.zip…");
    string hash=Package.HashFile(target);
    bool hasBackup=File.Exists(backup) && Package.HashFile(backup)==Pack.Info.original_sha256;
@@ -121,22 +120,6 @@ namespace LmuRu {
     CanInstall=original || (hasBackup && previous),CanRestore=hasBackup&&(current||previous),CanLaunch=original||current||previous,
     Message=original?"Оригинальная версия совместима с переводом.":current?(hasBackup?"Русский перевод установлен. Оригинал сохранён.":"Перевод установлен. Укажите исходный UI.zip для восстановления."):previous?"Установлена предыдущая редакция перевода.":"Ресурсы игры отличаются от проверенной версии. Дождитесь совместимого перевода." };
   }
-  public Inspection Inspect(string game) {
-   var s=InspectMenu(game);if(Pack.Native==null||s.State=="unknown")return s;
-   try {
-    var n=Pack.Native.Inspect(GameRoot(game));
-    bool menuOriginal=s.State=="original",menuInstalled=s.State=="installed";
-    s.CanRestore=(s.CanRestore||menuOriginal)&&n.CanRestore&&(n.Installed>0||!menuOriginal);
-    if(menuInstalled&&n.State!="installed") {
-     s.State="previous";s.CanInstall=n.CanRestore;
-     s.Message="Меню переведено. Установите дополнение HUD и гоночные шрифты.";
-    }else if(menuOriginal&&n.State!="original") {
-     s.State="previous";s.CanInstall=n.CanRestore;s.Message="Установлен только HUD. Можно завершить установку или восстановить оригинал.";
-    }else if(menuInstalled)s.Message="Меню и HUD установлены. Проверены словари и кириллица.";
-   }catch(InvalidDataException ex){s.State="unknown";s.CanInstall=false;s.CanRestore=false;s.Message=ex.Message;}
-   return s;
-  }
-  void NativeApply(string game,bool install){if(Pack.Native!=null)Pack.Native.Apply(GameRoot(game),install,()=>Guard(game),Progress);}
   static Dictionary<string,ZipArchiveEntry> Index(ZipArchive z) {
    var d=new Dictionary<string,ZipArchiveEntry>(StringComparer.Ordinal);
    foreach(var e in z.Entries) {
@@ -169,7 +152,7 @@ namespace LmuRu {
   public Inspection Verify(string game) {
    var s=Inspect(game);
    if(s.State=="unknown")throw new InvalidDataException(s.Message);
-   if(s.State=="installed"||s.State=="previous"&&InspectMenu(game).State=="installed")VerifyArchive(Target(game),s.HasBackup?s.Backup:null);
+   if(s.State=="installed")VerifyArchive(Target(game),s.HasBackup?s.Backup:null);
    Progress(100,"Проверка завершена: файлы целы.");return s;
   }
   Mutex Lock(string game) {
@@ -207,8 +190,8 @@ namespace LmuRu {
   }
   public string Install(string game) {
    using(var m=Lock(game))try {
-    Guard(game);if(Pack.Native!=null)Pack.Native.Inspect(GameRoot(game));var s=InspectMenu(game);
-    if(s.State=="installed"){VerifyArchive(Target(game),s.HasBackup?s.Backup:null);NativeApply(game,true);Progress(100,"Актуальный перевод уже установлен.");return s.Hash;}
+    Guard(game);var s=Inspect(game);
+    if(s.State=="installed"){VerifyArchive(Target(game),s.HasBackup?s.Backup:null);Progress(100,"Актуальный перевод уже установлен.");return s.Hash;}
     if(!s.CanInstall)throw new InvalidDataException(s.Message);
     string target=Target(game),backup=BackupPath(game);
     long needed=new FileInfo(target).Length*(s.HasBackup?1:2)+64*1024*1024;
@@ -246,16 +229,16 @@ namespace LmuRu {
      VerifyArchive(stage,backup);string hash=Package.HashFile(stage);
      // Receipt is written before atomic replacement so a crash after commit remains recoverable.
      AtomicText(ReceiptPath(game),Package.Json.Serialize(new Receipt{version=Pack.Info.version,sha256=hash,original_sha256=Pack.Info.original_sha256}));
-     Progress(96,"Сохраняем проверенный архив…");Commit(game,stage,s.Hash,hash);NativeApply(game,true);Progress(100,"Русский перевод установлен.");return hash;
+     Progress(96,"Сохраняем проверенный архив…");Commit(game,stage,s.Hash,hash);Progress(100,"Русский перевод установлен.");return hash;
     }finally{if(File.Exists(stage))File.Delete(stage);}
    }finally{m.ReleaseMutex();}
   }
   public string Restore(string game) {
    using(var m=Lock(game))try {
-    Guard(game);if(Pack.Native!=null)Pack.Native.Inspect(GameRoot(game));var s=InspectMenu(game);if(s.State=="original"){NativeApply(game,false);Progress(100,"Оригинал уже установлен.");return s.Hash;}
+    Guard(game);var s=Inspect(game);if(s.State=="original"){Progress(100,"Оригинал уже установлен.");return s.Hash;}
     if(!s.CanRestore)throw new InvalidDataException(s.HasBackup?s.Message:"Не найдена проверенная оригинальная копия UI.zip.");
     string stage=Path.Combine(Path.GetDirectoryName(Target(game)),".lmu-ru-restore-"+Guid.NewGuid().ToString("N")+".tmp");
-    try{Progress(40,"Восстанавливаем исходный UI.zip…");File.Copy(s.Backup,stage);NativeApply(game,false);Commit(game,stage,s.Hash,Pack.Info.original_sha256);Progress(100,"Оригинальный интерфейс восстановлен. Копия сохранена.");return Pack.Info.original_sha256;}
+    try{Progress(40,"Восстанавливаем исходный UI.zip…");File.Copy(s.Backup,stage);Commit(game,stage,s.Hash,Pack.Info.original_sha256);Progress(100,"Оригинальный интерфейс восстановлен. Копия сохранена.");return Pack.Info.original_sha256;}
     finally{if(File.Exists(stage))File.Delete(stage);}
    }finally{m.ReleaseMutex();}
   }
