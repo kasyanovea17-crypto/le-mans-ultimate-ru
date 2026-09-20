@@ -1,0 +1,17 @@
+{
+  "replacements": [
+    {
+      "before": "return setting.stringValue;",
+      "after": "return translateSettingDisplay(setting.stringValue);"
+    },
+    {
+      "before": "return settings22[settingKey].stringValue;",
+      "after": "return translateSettingDisplay(settings22[settingKey].stringValue);"
+    },
+    {
+      "before": "stringValue: settings2[setting.key].stringValue,\n                  onUpdate: handleUpdate,\n                  config: { className: \"sound-configuration-setting\" },",
+      "after": "stringValue: translateSettingDisplay(settings2[setting.key].stringValue),\n                  onUpdate: handleUpdate,\n                  config: { className: \"sound-configuration-setting\" },"
+    }
+  ],
+  "append": "\n// LMU_RU_DISPLAY_BEGIN: display only; never modifies API values.\nfunction translateSettingDisplay(value) {\n  if (typeof value !== \"string\" || instance.language !== \"en\") return value;\n  const options = {ns: \"translation\", keySeparator: false, nsSeparator: false, defaultValue: value};\n  if (!instance.exists(value, options)) return value;\n  const translated = t$5(value, options);\n  return typeof translated === \"string\" ? translated : value;\n}\n// LMU_RU_DISPLAY_END\n"
+}
