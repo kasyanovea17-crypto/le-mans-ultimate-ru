@@ -50,17 +50,18 @@ namespace LmuRu {
    Assert(!Directory.GetFiles(Path.Combine(root,"Bin"),".lmu-ru-*.tmp").Any(),"stages cleaned");
    Console.WriteLine("ENGINE_TEST_PASS checks="+count+" unknown_version=blocked backup=verified atomic_install=true rollback=byte_exact game_running=blocked real_game_writes=false");
   }
-  static void RealArchive(string original,string root) {
+  static void RealArchive(string original,string root,string nativeOriginal) {
    var p=Package.Load();Assert(Package.HashFile(original)==p.Info.original_sha256,"real baseline hash");
    Directory.CreateDirectory(Path.Combine(root,"Bin"));File.WriteAllText(Path.Combine(root,"Le Mans Ultimate.exe"),"fixture only; never executed");File.Copy(original,Path.Combine(root,"Bin","UI.zip"),false);
+   if(p.Native!=null)foreach(var f in p.Native.Info.files){string dst=Path.Combine(root,f.entry);Directory.CreateDirectory(Path.GetDirectoryName(dst));File.Copy(Path.Combine(nativeOriginal,f.entry),dst,false);}
    var e=new Engine(p);e.Running=()=>false;var a=e.Inspect(root);Assert(a.State=="original","real baseline state");Console.WriteLine("BASELINE_PASS sha256="+a.Hash+" entries="+p.Info.original_entries);
    string hash=e.Install(root);Assert(e.Verify(root).State=="installed","real modified verification");Assert(Package.HashFile(Engine.BackupPath(root))==p.Info.original_sha256,"real backup retained");
-   Console.WriteLine("MODIFIED_PASS sha256="+hash+" patched_entries=13 all_other_payloads=byte_identical");
-   string result=e.Restore(root);Assert(result==p.Info.original_sha256&&Package.HashFile(Engine.Target(root))==p.Info.original_sha256,"real rollback hash");Console.WriteLine("ROLLBACK_PASS sha256="+result+" behavior=original_english_interface");
+   Console.WriteLine("MODIFIED_PASS sha256="+hash+" patched_entries=13 native_files=642 all_other_payloads=byte_identical");
+   string result=e.Restore(root);Assert(result==p.Info.original_sha256&&Package.HashFile(Engine.Target(root))==p.Info.original_sha256,"real rollback hash");Console.WriteLine("ROLLBACK_PASS sha256="+result+" behavior=original_english_interface_and_hud");
    string final=e.Install(root);Assert(final==hash,"real deterministic rebuild");Console.WriteLine("REAL_ARCHIVE_TEST_PASS checks="+count+" installed_fixture_left_changed=true real_game_writes=false");
   }
   public static int Main(string[] args) {
-   try{if(args.Length==3&&args[0]=="--real")RealArchive(args[1],args[2]);else UnitTests(Path.Combine(Path.GetTempPath(),"LMU-RU-tests-"+Guid.NewGuid().ToString("N")));return 0;}
+   try{if(args.Length==4&&args[0]=="--real")RealArchive(args[1],args[2],args[3]);else UnitTests(Path.Combine(Path.GetTempPath(),"LMU-RU-tests-"+Guid.NewGuid().ToString("N")));return 0;}
    catch(Exception e){Console.Error.WriteLine(e);return 1;}
   }
  }
