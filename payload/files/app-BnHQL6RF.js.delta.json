@@ -11,6 +11,38 @@
     {
       "before": "stringValue: settings2[setting.key].stringValue,\n                  onUpdate: handleUpdate,\n                  config: { className: \"sound-configuration-setting\" },",
       "after": "stringValue: translateSettingDisplay(settings2[setting.key].stringValue),\n                  onUpdate: handleUpdate,\n                  config: { className: \"sound-configuration-setting\" },"
+    },
+    {
+      "before": "    \"Fill Grid\"\n  ];",
+      "after": "    t2(\"Fill Grid\")\n  ];"
+    },
+    {
+      "before": "year: \"All\",\n              selected: trackFilterType",
+      "after": "year: t2(\"All\"),\n              selected: trackFilterType"
+    },
+    {
+      "before": "year: \"Championship\",\n              selected: trackFilterType",
+      "after": "year: t2(\"Championship\"),\n              selected: trackFilterType"
+    },
+    {
+      "before": "children: (_a2 = t22.layoutName) != null ? _a2 : \"Default\"",
+      "after": "children: translateSettingDisplay((_a2 = t22.layoutName) != null ? _a2 : \"Default\")"
+    },
+    {
+      "before": "children: getStringValue(setting.stringValue, setting.currentValue)",
+      "after": "children: translateSettingDisplay(getStringValue(setting.stringValue, setting.currentValue))"
+    },
+    {
+      "before": "children: slides[currentSlideIndex].description",
+      "after": "children: translateSettingDisplay(slides[currentSlideIndex].description)"
+    },
+    {
+      "before": "classNames == null ? void 0 : classNames.secondaryHeading\n          ),\n          children: track2.location",
+      "after": "classNames == null ? void 0 : classNames.secondaryHeading\n          ),\n          children: translateSettingDisplay(track2.location)"
+    },
+    {
+      "before": "  reactExports.useLayoutEffect(() => {\n    if (!wrapperRef.current) {\n      return;\n    }\n    const childSpan = wrapperRef.current.children[0];\n    const scale2 = childSpan ? Math.min(1, wrapperRef.current.clientWidth / childSpan.clientWidth) : 1;\n    setTextScale(scale2);\n  }, deps);",
+      "after": "  reactExports.useLayoutEffect(() => {\n    let alive = true;\n    const measure = () => {\n      const wrapper = wrapperRef.current;\n      if (!alive || !wrapper || !wrapper.children[0]) return;\n      const span = wrapper.children[0];\n      const width = Math.max(span.scrollWidth, span.offsetWidth);\n      if (wrapper.clientWidth > 0 && width > 0)\n        setTextScale(Math.min(1, wrapper.clientWidth / width));\n    };\n    measure();\n    const timers = [100, 500, 1500].map(ms => setTimeout(measure, ms));\n    window.addEventListener(\"resize\", measure);\n    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);\n    const observer = typeof ResizeObserver !== \"undefined\" ? new ResizeObserver(measure) : null;\n    if (observer && wrapperRef.current) observer.observe(wrapperRef.current);\n    return () => { alive = false; timers.forEach(clearTimeout); window.removeEventListener(\"resize\", measure); if (observer) observer.disconnect(); };\n  }, [text2, ...(deps || [])]);"
     }
   ],
   "append": "\n// LMU_RU_DISPLAY_BEGIN: display only; never modifies API values.\nfunction translateSettingDisplay(value) {\n  if (typeof value !== \"string\" || instance.language !== \"en\") return value;\n  const options = {ns: \"translation\", keySeparator: false, nsSeparator: false, defaultValue: value};\n  if (!instance.exists(value, options)) return value;\n  const translated = t$5(value, options);\n  return typeof translated === \"string\" ? translated : value;\n}\n// LMU_RU_DISPLAY_END\n"

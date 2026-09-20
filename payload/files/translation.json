@@ -351,7 +351,7 @@
   "Decline": "Отклонить",
   "Decline Invitation?": "Отклонить приглашение?",
   "Decline Invite": "Отклонить приглашение",
-  "Default": "По умолчанию",
+  "Default": "Стандарт",
   "Delete": "Удалить",
   "Delete livery?": "Удалить ливрею?",
   "Delete Save": "Удалить сохранение",
@@ -979,7 +979,7 @@
   "Re-enter Email Address": "Повторите адрес электронной почты",
   "Readings": "Показания",
   "Ready to Start": "Готово к старту",
-  "Real": "Реалистично",
+  "Real": "×1",
   "Realistic": "Реалистично",
   "Realroad:": "RealRoad:",
   "Rear brake duct blanking": "Перекрытие задних торм. воздуховодов",
@@ -1517,5 +1517,12 @@
   "Software": "Программная",
   "Video": "Видео",
   "MSAA 2x/MSAA 4x/MSAA 8x": "MSAA 2x/MSAA 4x/MSAA 8x",
-  "Revert": "Отменить изменения"
+  "Revert": "Отменить изменения",
+  "Fill Grid": "Полная решётка",
+  "School Circuit": "Учебная трасса",
+  "More Details": "Подробнее",
+  "OFF": "Выкл.",
+  "ON": "Вкл.",
+  "Start, your, engines! LMU travels Stateside to deliver two track legends of North American motorsport!": "Заводите моторы! В LMU — две легендарные трассы Северной Америки.",
+  "Sebring, Florida, USA": "Себринг, Флорида, США"
 }
